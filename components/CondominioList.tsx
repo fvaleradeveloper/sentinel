@@ -12,7 +12,12 @@ interface Condominio {
   address: string
 }
 
-export function CondominioList({ webappSlug, canAddMore }: { webappSlug: string; canAddMore: boolean }) {
+interface CondominioListProps {
+  webappSlug: string
+  canAddMore: boolean
+}
+
+export function CondominioList({ webappSlug, canAddMore }: CondominioListProps) {
   const [condominios, setCondominios] = useState<Condominio[]>([])
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [newName, setNewName] = useState('')
@@ -65,11 +70,11 @@ export function CondominioList({ webappSlug, canAddMore }: { webappSlug: string;
         {condominios.map((cond) => (
           <Link
             key={cond.id}
-            href={/dashboard//condominios/}
+            href={`/dashboard/${webappSlug}/condominios/${cond.id}`}
             className="block p-4 border rounded-lg hover:shadow-md transition"
           >
             <h3 className="font-bold">{cond.name}</h3>
-            <p className="text-sm text-gray-600">{cond.address || 'Sin direcciÃ³n'}</p>
+            <p className="text-sm text-gray-600">{cond.address || 'Sin dirección'}</p>
           </Link>
         ))}
       </div>
@@ -82,7 +87,7 @@ export function CondominioList({ webappSlug, canAddMore }: { webappSlug: string;
             onChange={(e) => setNewName(e.target.value)}
           />
           <Input
-            placeholder="DirecciÃ³n (opcional)"
+            placeholder="Dirección (opcional)"
             value={newAddress}
             onChange={(e) => setNewAddress(e.target.value)}
           />
