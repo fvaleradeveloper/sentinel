@@ -17,7 +17,7 @@ export default async function Home() {
             </CardHeader>
             <CardContent>
               <Link
-                href={/}
+                href={`/${webapp.slug}`}
                 className="inline-block bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
               >
                 Ingresar
