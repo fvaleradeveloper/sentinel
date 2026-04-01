@@ -1,4 +1,6 @@
-﻿import { ReactNode, useEffect } from 'react'
+﻿'use client'
+
+import { ReactNode, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { cn } from '@/lib/utils'
 
