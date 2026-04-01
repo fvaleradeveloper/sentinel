@@ -1,9 +1,9 @@
-﻿import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card'
 
 export default async function Home() {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data: webapps } = await supabase.from('webapps').select('*')
   return (
     <div>

@@ -1,49 +1,75 @@
 import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
-import { CondominioList } from '@/components/CondominioList'
+import { notFound } from 'next/navigation'
+import Link from 'next/link'
+import { RequestSubscriptionButton } from '@/components/RequestSubscriptionButton'
 import { PlanLimits } from '@/components/PlanLimits'
 
-export default async function Dashboard({ params }: { params: { webappSlug: string } }) {
-  const supabase = createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/login')
-
-  const { data: webapp } = await supabase
+export default async function WebappLanding({ params }: { params: Promise<{ webappSlug: string }> }) {
+  const { webappSlug } = await params
+  const supabase = await createClient()
+  const { data: webapp, error } = await supabase
     .from('webapps')
-    .select('id')
-    .eq('slug', params.webappSlug)
+    .select('*')
+    .eq('slug', webappSlug)
     .single()
-  if (!webapp) redirect('/')
+  if (error || !webapp) notFound()
 
-  const { data: subscription } = await supabase
-    .from('subscriptions')
-    .select('plan, status')
-    .eq('user_id', user.id)
-    .eq('webapp_id', webapp.id)
-    .eq('status', 'active')
-    .single()
-
-  if (!subscription) {
-    return redirect(`/${params.webappSlug}`)
+  const { data: { user } } = await supabase.auth.getUser()
+  let hasActiveSub = false
+  let currentPlan = ''
+  if (user) {
+    const { data: sub } = await supabase
+      .from('subscriptions')
+      .select('plan, status')
+      .eq('user_id', user.id)
+      .eq('webapp_id', webapp.id)
+      .eq('status', 'active')
+      .maybeSingle()
+    hasActiveSub = !!sub
+    currentPlan = sub?.plan || ''
   }
 
-  const limits: Record<string, number> = { mini: 3, start: 5, pro: 12, max: 999999 }
-  const maxCondominios = limits[subscription.plan]
-  const { count: currentCondominios } = await supabase
-    .from('condominios')
-    .select('*', { count: 'exact', head: true })
-    .eq('user_id', user.id)
-
-  const canAddMore = (currentCondominios ?? 0) < maxCondominios
+  const priceInfo = webapp.price_info as Record<string, number>
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-2">Mis Condominios</h1>
-      <p className="text-gray-600 mb-6">
-        Plan: {subscription.plan} | Condominios: {currentCondominios} / {maxCondominios === 999999 ? '∞' : maxCondominios}
-      </p>
-      <CondominioList webappSlug={params.webappSlug} canAddMore={canAddMore} />
-      <PlanLimits currentPlan={subscription.plan} />
+    <div className="max-w-4xl mx-auto">
+      <div className="aspect-video mb-6">
+        <iframe
+          src={webapp.video_url}
+          className="w-full h-full rounded-lg"
+          title={webapp.name}
+        />
+      </div>
+      <h1 className="text-3xl font-bold mb-4">{webapp.name}</h1>
+      <div className="prose max-w-none mb-6" dangerouslySetInnerHTML={{ __html: webapp.description }} />
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        {Object.entries(priceInfo).map(([plan, price]) => (
+          <div key={plan} className="border p-3 rounded text-center">
+            <div className="font-bold capitalize">{plan}</div>
+            <div>S/ {price} / mes</div>
+          </div>
+        ))}
+      </div>
+
+      {hasActiveSub ? (
+        <Link
+          href={`/dashboard/${webappSlug}`}
+          className="inline-block bg-green-600 text-white px-6 py-3 rounded-md hover:bg-green-700"
+        >
+          Ir a mi cuenta
+        </Link>
+      ) : (
+        <RequestSubscriptionButton webappId={webapp.id} webappSlug={webappSlug} />
+      )}
+
+      {hasActiveSub && (
+        <PlanLimits currentPlan={currentPlan} />
+      )}
+
+      <div className="mt-12 text-right text-xs text-gray-400">
+        <Link href={`/admin/${webappSlug}`}>Acceso administrador</Link>
+      </div>
     </div>
   )
 }

@@ -72,7 +72,7 @@ export function FinanzasTab({ condominioId }: { condominioId: string }) {
   const totalEgresos = transacciones.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0)
   const balance = totalIngresos - totalEgresos
 
-  // Datos para grÃ¡fico mensual
+  // Datos para gráfico mensual
   const last6Months = () => {
     const months = []
     for (let i = 5; i >= 0; i--) {
@@ -131,7 +131,7 @@ export function FinanzasTab({ condominioId }: { condominioId: string }) {
           <div className="text-sm text-red-800">Total Egresos</div>
           <div className="text-2xl font-bold">S/ {totalEgresos.toFixed(2)}</div>
         </div>
-        <div className={p-4 rounded }>
+        <div className={`p-4 rounded ${balance >= 0 ? 'bg-blue-100' : 'bg-yellow-100'}`}>
           <div className="text-sm">Balance</div>
           <div className="text-2xl font-bold">S/ {balance.toFixed(2)}</div>
         </div>
@@ -147,9 +147,9 @@ export function FinanzasTab({ condominioId }: { condominioId: string }) {
             <tr className="bg-gray-100">
               <th className="border px-4 py-2">Fecha</th>
               <th className="border px-4 py-2">Tipo</th>
-              <th className="border px-4 py-2">CategorÃ­a</th>
+              <th className="border px-4 py-2">Categoría</th>
               <th className="border px-4 py-2">Monto</th>
-              <th className="border px-4 py-2">DescripciÃ³n</th>
+              <th className="border px-4 py-2">Descripción</th>
             </tr>
           </thead>
           <tbody>
@@ -172,10 +172,10 @@ export function FinanzasTab({ condominioId }: { condominioId: string }) {
             <option value="income">Ingreso</option>
             <option value="expense">Egreso</option>
           </Select>
-          <Input placeholder="CategorÃ­a" value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} />
+          <Input placeholder="Categoría" value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} />
           <Input type="number" step="0.01" placeholder="Monto" value={form.amount} onChange={(e) => setForm({ ...form, amount: e.target.value })} />
           <Input type="date" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} />
-          <Input placeholder="DescripciÃ³n" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
+          <Input placeholder="Descripción" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
           <div className="flex justify-end gap-2">
             <Button variant="outline" onClick={() => setIsModalOpen(false)}>Cancelar</Button>
             <Button onClick={addTransaccion} disabled={loading}>{loading ? 'Guardando...' : 'Guardar'}</Button>

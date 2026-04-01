@@ -27,7 +27,7 @@ const ReceiptPDF = ({ transaccion, condominio }: any) => (
         <Text style={styles.col}>{new Date(transaccion.date).toLocaleDateString()}</Text>
       </View>
       <View style={styles.row}>
-        <Text style={styles.col}>CategorÃ­a:</Text>
+        <Text style={styles.col}>Categorí­a:</Text>
         <Text style={styles.col}>{transaccion.category}</Text>
       </View>
       <View style={styles.row}>
@@ -35,7 +35,7 @@ const ReceiptPDF = ({ transaccion, condominio }: any) => (
         <Text style={styles.col}>S/ {transaccion.amount.toFixed(2)}</Text>
       </View>
       <View style={styles.row}>
-        <Text style={styles.col}>DescripciÃ³n:</Text>
+        <Text style={styles.col}>Descripción:</Text>
         <Text style={styles.col}>{transaccion.description}</Text>
       </View>
     </Page>
@@ -76,15 +76,15 @@ export function ReportesTab({ condominioId }: { condominioId: string }) {
           </Select>
         </div>
         {selectedId && (
-          <PDFDownloadLink
-            document={<ReceiptPDF transaccion={selectedTrans} condominio={condominio} />}
-            fileName={ecibo_.pdf}
-          >
-            {({ loading }) => (
-              <Button disabled={loading}>{loading ? 'Generando...' : 'Descargar PDF'}</Button>
-            )}
-          </PDFDownloadLink>
-        )}
+  <PDFDownloadLink
+    document={<ReceiptPDF transaccion={selectedTrans} condominio={condominio} />}
+    fileName={`recibo_${selectedId}.pdf`}
+  >
+    {({ loading }) => (
+      <Button disabled={loading}>{loading ? 'Generando...' : 'Descargar PDF'}</Button>
+    )}
+  </PDFDownloadLink>
+)}
       </div>
     </div>
   )
