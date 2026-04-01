@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -9,7 +9,9 @@ import Link from 'next/link'
 
 export const dynamic = 'force-dynamic'
 
-export default function LoginPage() {
+import { Suspense } from 'react'
+
+function LoginForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -59,5 +61,13 @@ export default function LoginPage() {
         ¿No tienes cuenta? <Link href="/signup" className="text-blue-600 hover:underline">Regístrate</Link>
       </p>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="max-w-md mx-auto mt-10">Cargando...</div>}>
+      <LoginForm />
+    </Suspense>
   )
 }
