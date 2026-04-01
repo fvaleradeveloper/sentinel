@@ -1,4 +1,5 @@
-﻿'use client'
+﻿"use client"
+
 import { useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
@@ -31,18 +32,18 @@ export default function LoginPage() {
 
   return (
     <div className="max-w-md mx-auto mt-10">
-      <h1 className="text-2xl font-bold mb-6">Iniciar sesiÃ³n</h1>
+      <h1 className="text-2xl font-bold mb-6">Iniciar sesión</h1>
       <form onSubmit={handleLogin} className="space-y-4">
         <Input
           type="email"
-          placeholder="Correo electrÃ³nico"
+          placeholder="Correo electrónico"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
         <Input
           type="password"
-          placeholder="ContraseÃ±a"
+          placeholder="Contraseña"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
@@ -53,7 +54,7 @@ export default function LoginPage() {
         </Button>
       </form>
       <p className="mt-4 text-center text-sm">
-        Â¿No tienes cuenta? <Link href="/signup" className="text-blue-600 hover:underline">RegÃ­strate</Link>
+        ¿No tienes cuenta? <Link href="/signup" className="text-blue-600 hover:underline">Regístrate</Link>
       </p>
     </div>
   )
