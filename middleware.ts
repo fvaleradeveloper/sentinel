@@ -8,22 +8,27 @@ export async function middleware(req: NextRequest) {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        get: (name) => req.cookies.get(name)?.value,
-        set: (name, value, options) => {
+        get(name: string) {
+          return req.cookies.get(name)?.value
+        },
+        set(name: string, value: string, options: any) {
           response.cookies.set({ name, value, ...options })
         },
-        remove: (name, options) => {
+        remove(name: string, options: any) {
           response.cookies.set({ name, value: '', ...options })
         },
       },
     }
   )
+
   const { data: { user } } = await supabase.auth.getUser()
 
   const protectedPaths = ['/dashboard', '/admin']
   const isProtected = protectedPaths.some(path => req.nextUrl.pathname.startsWith(path))
+
   if (isProtected && !user) {
     return NextResponse.redirect(new URL('/login', req.url))
   }
+
   return response
 }
