@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
@@ -33,8 +33,8 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="max-w-md mx-auto mt-10">
-      <h1 className="text-2xl font-bold mb-6">Crear cuenta</h1>
+    <div className="w-full max-w-sm mx-auto mt-10 px-4 sm:px-0">
+      <h1 className="text-2xl font-bold mb-6 text-center text-primary">Crear cuenta</h1>
       <form onSubmit={handleSignup} className="space-y-4">
         <Input
           placeholder="Nombre completo"
@@ -57,12 +57,12 @@ export default function SignupPage() {
           required
         />
         {error && <p className="text-red-500 text-sm">{error}</p>}
-        <Button type="submit" disabled={loading} className="w-full">
+        <Button type="submit" disabled={loading} className="w-full h-12 text-lg">
           {loading ? 'Registrando...' : 'Registrarse'}
         </Button>
       </form>
-      <p className="mt-4 text-center text-sm">
-        Â¿Ya tienes cuenta? <Link href="/login" className="text-blue-600 hover:underline">Inicia sesiÃ³n</Link>
+      <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
+        ¿Ya tienes cuenta? <Link href="/login" className="text-primary hover:text-primaryHover font-medium hover:underline">Inicia sesión</Link>
       </p>
     </div>
   )

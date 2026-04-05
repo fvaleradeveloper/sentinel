@@ -35,8 +35,8 @@ function LoginForm() {
   }
 
   return (
-    <div className="max-w-md mx-auto mt-10">
-      <h1 className="text-2xl font-bold mb-6">Iniciar sesión</h1>
+    <div className="w-full max-w-sm mx-auto mt-10 px-4 sm:px-0">
+      <h1 className="text-2xl font-bold mb-6 text-center text-primary">Iniciar sesión</h1>
       <form onSubmit={handleLogin} className="space-y-4">
         <Input
           type="email"
@@ -53,12 +53,12 @@ function LoginForm() {
           required
         />
         {error && <p className="text-red-500 text-sm">{error}</p>}
-        <Button type="submit" disabled={loading} className="w-full">
+        <Button type="submit" disabled={loading} className="w-full h-12 text-lg">
           {loading ? 'Ingresando...' : 'Ingresar'}
         </Button>
       </form>
-      <p className="mt-4 text-center text-sm">
-        ¿No tienes cuenta? <Link href="/signup" className="text-blue-600 hover:underline">Regístrate</Link>
+      <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
+        ¿No tienes cuenta? <Link href="/signup" className="text-primary hover:text-primaryHover font-medium hover:underline">Regístrate</Link>
       </p>
     </div>
   )

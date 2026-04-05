@@ -1,4 +1,4 @@
-﻿-- Crear tablas y polÃ­ticas para Sentinel SaaS
+-- Crear tablas y polÃ­ticas para Sentinel SaaS
 -- Copia y ejecuta en el editor SQL de Supabase
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
@@ -109,13 +109,13 @@ CREATE POLICY "Transacciones access via condominio" ON transacciones FOR ALL USI
 
 -- Trigger para crear perfil al registrar usuario
 CREATE OR REPLACE FUNCTION public.handle_new_user()
-RETURNS TRIGGER AS H:\......Z.proyectos\sentinel-saas\create-sentinel-saas.ps1
+RETURNS TRIGGER AS $$
 BEGIN
   INSERT INTO public.profiles (id, full_name)
   VALUES (NEW.id, NEW.raw_user_meta_data->>'full_name');
   RETURN NEW;
 END;
-H:\......Z.proyectos\sentinel-saas\create-sentinel-saas.ps1 LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
 
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
